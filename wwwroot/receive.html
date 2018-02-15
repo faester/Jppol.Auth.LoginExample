@@ -1,0 +1,68 @@
+<html>
+	<head>
+		<title>Welcome</title>
+		<script>
+			function base64UrlDecode(s) {
+				return atob(s.replace(/-/g, '+')
+						.replace(/_/g, '/')
+						);
+			}
+
+			function getAnchor() {
+				var elements = window.location.href.split('#');
+
+				if (elements.length > 1) {
+					var vars = elements[1].split('&');
+					return vars;
+				} else {
+					return null;
+				}
+			}
+
+			function parseAnchor() {
+				var anchorElements = getAnchor();
+				if (anchorElements == null) {
+					console.warn("no anchor");
+					return;
+				}
+
+				for(var i = 0; i < anchorElements.length; i++) {
+					var kvp = anchorElements[i].split("=");
+					appendToken(kvp[0], kvp[1]);
+				}
+			}
+
+			function prettyPrintJson(json) {
+				var obj = JSON.parse(json);
+				return JSON.stringify(obj, null, 2); // spacing level = 2
+			}
+
+			function appendToken(name, value) {
+				var h3 = document.createElement("h3");
+				h3.innerText = name;
+				var pre = document.createElement("pre");
+				if (name == "id_token" || name == "access_token") {
+					var components = value.split('.');
+					pre.innerText = prettyPrintJson(base64UrlDecode(components[0]));
+					pre.innerText += "\n" + prettyPrintJson(base64UrlDecode(components[1]));
+					pre.innerText += "\n" + components[2];
+
+				} else {
+					pre.innerText = value;
+				}
+				var div = document.createElement("div");
+				div.appendChild(h3);
+				div.appendChild(pre);
+				document.getElementsByTagName("body")[0].appendChild(div);
+
+
+
+			}
+
+		</script>
+	</head>
+	<body onload="parseAnchor();">
+		<a href="/login">Obtain token</a>
+	</body>
+</html>
+

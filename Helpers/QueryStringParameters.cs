@@ -14,14 +14,6 @@ namespace Jppol.Auth.LoginExample.Helpers
 		_parameters.Add(Tuple.Create(key, value));
 	}
 
-	public void Add(IEnumerable<HtmlInput> inputs)
-	{
-		foreach(var input in inputs)
-		{
-			Add(input.Name, input.Value);
-		}
-	}
-
 	public string GetQueryString()
 	{
 		return string.Join("&", _parameters

@@ -21,7 +21,7 @@ namespace Jppol.Auth.LoginExample
             WebHost.CreateDefaultBuilder(args)
 	    	.UseKestrel()
                 .UseStartup<Startup>()
-		.UseUrls("http://localhost:5201/")
+		.UseUrls("http://localhost:5000/")
                 .Build();
     }
 }

@@ -273,3 +273,5 @@ CreateRsaKey/certblob.json
 *.*.orig
 
 *.bak
+appsettings.prod.json
+appsettings.test.json

@@ -62,6 +62,7 @@ namespace Jppol.Auth.LoginExample
 		qsParameters.Add("response_type", "token id_token");
 		qsParameters.Add("redirect_uri", Configuration["auth:redirect"]);
 		qsParameters.Add("client_id", Configuration["auth:clientId"]);
+		qsParameters.Add("error_uri", Configuration["auth:error"]);
 		qsParameters.Add("code_challenge_method", codeChallenge.Method);
 		qsParameters.Add("code_challenge", codeChallenge.Challenge);
 		qsParameters.Add("scope", Configuration["auth:scope"]);

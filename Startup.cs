@@ -59,7 +59,7 @@ namespace Jppol.Auth.LoginExample
 	private QueryStringParameters AuthorizationParameters(CodeChallenge codeChallenge)
 	{
 		var qsParameters = new QueryStringParameters();
-		qsParameters.Add("response_type", "token id_token");
+		qsParameters.Add("response_type", "code id_token token");
 		qsParameters.Add("redirect_uri", Configuration["auth:redirect"]);
 		qsParameters.Add("client_id", Configuration["auth:clientId"]);
 		qsParameters.Add("error_uri", Configuration["auth:error"]);
@@ -67,6 +67,8 @@ namespace Jppol.Auth.LoginExample
 		qsParameters.Add("code_challenge", codeChallenge.Challenge);
 		qsParameters.Add("scope", Configuration["auth:scope"]);
 		qsParameters.Add("nonce", Guid.NewGuid().ToString());
+//		qsParameters.Add("response_mode", "form_post");
+		qsParameters.Add("state", "i am statefull");
 		return qsParameters;
 	}
     }

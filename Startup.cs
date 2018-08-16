@@ -61,7 +61,7 @@ namespace Jppol.Auth.LoginExample
 		}
 		else if (context.Request.Path.Equals("/logout")) 
 		{
-		        Uri endpoint = new Uri(new Uri(Configuration["auth:endpoint"]), "/connect/endsession?" + context.Request.QueryString);
+		        Uri endpoint = new Uri(new Uri(Configuration["auth:endpoint"]), "/connect/endsession" + context.Request.QueryString);
 			context.Response.StatusCode = 302;
 			context.Response.Headers["Location"] = endpoint.ToString();
 		}

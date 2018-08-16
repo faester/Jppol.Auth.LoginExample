@@ -49,6 +49,16 @@ namespace Jppol.Auth.LoginExample
 			context.Response.Headers["Location"] = endpoint.ToString();
 			context.Response.Cookies.Append("codeChallenge", codeChallenge.Verifier);
 		}
+		else if (context.Request.Path.Equals("/login-implicit")) 
+		{
+			var codeChallenge = new CodeChallenge();
+			var authParameters = AuthorizationParameters(codeChallenge, "token id_token");
+			authParameters["scope"] = "openid access-features SAAPI userservice";
+			Uri endpoint = new Uri(new Uri(Configuration["auth:endpoint"]), "/connect/authorize?" + authParameters.GetQueryString());
+			context.Response.StatusCode = 302;
+			context.Response.Headers["Location"] = endpoint.ToString();
+			context.Response.Cookies.Append("codeChallenge", codeChallenge.Verifier);
+		}
 		else if (context.Request.Path.Equals("/logout")) 
 		{
 		        Uri endpoint = new Uri(new Uri(Configuration["auth:endpoint"]), "/connect/endsession?" + context.Request.QueryString);
@@ -62,10 +72,10 @@ namespace Jppol.Auth.LoginExample
             });
         }
 
-	private QueryStringParameters AuthorizationParameters(CodeChallenge codeChallenge)
+	private Dictionary<string, string> AuthorizationParameters(CodeChallenge codeChallenge, string responseType = "code id_token token")
 	{
-		var qsParameters = new QueryStringParameters();
-		qsParameters.Add("response_type", "code id_token token");
+		var qsParameters = new Dictionary<string, string>();
+		qsParameters.Add("response_type", responseType);
 		qsParameters.Add("redirect_uri", Configuration["auth:redirect"]);
 		qsParameters.Add("client_id", Configuration["auth:clientId"]);
 		qsParameters.Add("error_uri", Configuration["auth:error"]);
@@ -77,5 +87,18 @@ namespace Jppol.Auth.LoginExample
 		qsParameters.Add("state", "i am statefull");
 		return qsParameters;
 	}
+    }
+
+    internal static class DictionaryExtensions
+    {
+	    public static string GetQueryString(this Dictionary<string, string> input) 
+	    {
+		var queryStringParameters = new QueryStringParameters();
+		foreach (var kvp in input){
+			queryStringParameters.Add(kvp.Key, kvp.Value);
+		}
+
+		return queryStringParameters.GetQueryString();
+	    }
     }
 }

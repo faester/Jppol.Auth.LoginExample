@@ -41,18 +41,22 @@
 				var h3 = document.createElement("h3");
 				h3.innerText = name;
 				var pre = document.createElement("pre");
+				var div = document.createElement("div");
+				div.appendChild(h3);
+				div.appendChild(pre);
 				if (name == "id_token" || name == "access_token") {
 					var components = value.split('.');
 					pre.innerText = prettyPrintJson(base64UrlDecode(components[0]));
 					pre.innerText += "\n" + prettyPrintJson(base64UrlDecode(components[1]));
 					pre.innerText += "\n" + components[2];
-
+					var logoutAnchor = document.createElement("a");
+					logoutAnchor.href = "/logout?id_token_hint=" + value + "&post_logout_redirect_uri=https://finans.dk";
+					logoutAnchor.innerText = "Logout using token..";
+					div.appendChild(logoutAnchor);
 				} else {
 					pre.innerText = value;
 				}
-				var div = document.createElement("div");
-				div.appendChild(h3);
-				div.appendChild(pre);
+
 				document.getElementsByTagName("body")[0].appendChild(div);
 
 

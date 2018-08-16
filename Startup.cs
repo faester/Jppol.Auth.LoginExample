@@ -49,6 +49,12 @@ namespace Jppol.Auth.LoginExample
 			context.Response.Headers["Location"] = endpoint.ToString();
 			context.Response.Cookies.Append("codeChallenge", codeChallenge.Verifier);
 		}
+		else if (context.Request.Path.Equals("/logout")) 
+		{
+		        Uri endpoint = new Uri(new Uri(Configuration["auth:endpoint"]), "/connect/endsession?" + context.Request.QueryString);
+			context.Response.StatusCode = 302;
+			context.Response.Headers["Location"] = endpoint.ToString();
+		}
 		else 
 		{
 	                await context.Response.SendFileAsync("./wwwroot/receive.html");
